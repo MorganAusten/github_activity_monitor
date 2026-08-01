@@ -3,6 +3,7 @@ import requests
 from pprint import pprint
 from app.github_client import GitHubClient
 from app.mappers.repository_mapper import repository_from_github
+from app.repository_filter import repository_filter
 
 def main() -> None:
     username = input("Username:").strip()
@@ -29,14 +30,34 @@ def main() -> None:
         print("GitHub returned invalid HTTP response.")
         return
 
+    print(f"\n{len(repositories)} depos found. \n")
+    print("All repositories:")
+    for repository in repositories:
+        print(f"{repository.owner} | {repository.name} | {repository.language} | {repository.stars} stars")
+
+
 
     # pprint(raw_repositories[0])
     # return
 
-    print(f"\n{len(repositories)} depos found. \n")
 
-    for repository in repositories:
-        print(f"{repository.owner} | {repository.name} | {repository.language} | {repository.stars} stars")
+    filtered_repositories_a = repository_filter(repositories, language="HTML", stars=100)
+    print(f"\n{len(filtered_repositories_a)} repos found. \n")
+    print("Filtered repositories_a (params: language = HTML , stars = 100):")
+    for repository in filtered_repositories_a:
+        print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
+
+    # filtered_repositories_b = repository_filter(repositories, language= None, stars=1000)
+    # filtered_repositories_c = repository_filter(repositories, language= "Ruby", stars=500)
+    # print(f"\n{len(filtered_repositories_b)} repos found. \n")
+    # print("Filtered repositories_b (params: language = None, stars = 1000):")
+    # for repository in filtered_repositories_b:
+    #     print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
+
+    # print(f"\n{len(filtered_repositories_c)} repos found. \n")
+    # print("Filtered repositories_c (params: language = Ruby, stars = 500):")
+    # for repository in filtered_repositories_c:
+    #     print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
 
 
 
