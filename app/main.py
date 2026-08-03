@@ -1,9 +1,14 @@
 import requests
 
+import app.reports.repository_reporter as repos_reporter 
+
 from pprint import pprint
+from tests.test_repository_filter import test_repository_filter
 from app.github_client import GitHubClient
 from app.mappers.repository_mapper import repository_from_github
 from app.repository_filter import repository_filter
+from app.reports.markdown_report import generate_markdown_report
+from app.file_writter import write_text_file
 
 def main() -> None:
     username = input("Username:").strip()
@@ -59,7 +64,12 @@ def main() -> None:
     # for repository in filtered_repositories_c:
     #     print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
 
+    # test_repository_filter()
 
+    markdown = generate_markdown_report(repos_reporter.build_repository_report(repositories))
+    print(generate_markdown_report(repos_reporter.build_repository_report(repositories)))
+
+    write_text_file(markdown, "reports/github_report.md")
 
 if __name__ == "__main__":
     main()
