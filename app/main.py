@@ -2,13 +2,11 @@ import requests
 
 import app.reports.repository_reporter as repos_reporter 
 
-from pprint import pprint
-from tests.test_repository_filter import test_repository_filter
 from app.github_client import GitHubClient
-from app.mappers.repository_mapper import repository_from_github
+from app.mappers.repository_mapper import map_repository_from_github
 from app.repository_filter import repository_filter
 from app.reports.markdown_report import generate_markdown_report
-from app.file_writter import write_text_file
+from app.file_writer import write_text_file
 
 def main() -> None:
     username = input("Username:").strip()
@@ -17,7 +15,7 @@ def main() -> None:
 
     try:
         raw_repositories = client.get_public_repositories(username)
-        repositories = [repository_from_github(repository) for repository in raw_repositories]
+        repositories = [map_repository_from_github(repository) for repository in raw_repositories]
         
     except ValueError as error:
         print(f"Input Invalid: {error}")
@@ -69,7 +67,8 @@ def main() -> None:
     markdown = generate_markdown_report(repos_reporter.build_repository_report(repositories))
     print(generate_markdown_report(repos_reporter.build_repository_report(repositories)))
 
-    write_text_file(markdown, "reports/github_report.md")
+    created_file =  write_text_file(markdown, "reports/github_report")
+    print(f"Created file: {created_file}")
 
 if __name__ == "__main__":
     main()

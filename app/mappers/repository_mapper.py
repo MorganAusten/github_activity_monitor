@@ -1,6 +1,8 @@
+from typing import Any
 from app.models.repository import Repository
 
-def repository_from_github(payload: dict[str, Any]) -> Repository:
+
+def map_repository_from_github(payload: dict[str, Any]) -> Repository:
     return Repository(
         id=payload["id"],
         owner=payload["owner"]["login"],
