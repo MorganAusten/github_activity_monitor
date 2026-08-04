@@ -1,0 +1,58 @@
+[
+    {
+        "repository_id": 1296269,
+        "owner": "octocat",
+        "name": "Hello-World",
+        "stars": 3746,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 1300192,
+        "owner": "octocat",
+        "name": "Spoon-Knife",
+        "stars": 13947,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 20978623,
+        "owner": "octocat",
+        "name": "hello-worId",
+        "stars": 778,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 132935648,
+        "owner": "octocat",
+        "name": "boysenberry-repo-1",
+        "stars": 467,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 56271164,
+        "owner": "octocat",
+        "name": "test-repo1",
+        "stars": 474,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 18221276,
+        "owner": "octocat",
+        "name": "git-consortium",
+        "stars": 596,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 64778136,
+        "owner": "octocat",
+        "name": "linguist",
+        "stars": 751,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    },
+    {
+        "repository_id": 17881631,
+        "owner": "octocat",
+        "name": "octocat.github.io",
+        "stars": 1141,
+        "captured_at": "2026-08-04T15:20:10.913738"
+    }
+]

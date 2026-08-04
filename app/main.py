@@ -1,7 +1,9 @@
 import requests
-
 import app.reports.repository_reporter as repos_reporter 
 
+from datetime import datetime
+from app.models.repository_snapshot import make_repository_snapshot
+from app.database.json_snapshot_repository import save_snapshots_as_json
 from app.github_client import GitHubClient
 from app.mappers.repository_mapper import map_repository_from_github
 from app.repository_filter import repository_filter
@@ -69,6 +71,15 @@ def main() -> None:
 
     created_file =  write_text_file(markdown, "reports/github_report")
     print(f"Created file: {created_file}")
+
+    captured_at = datetime.now()
+
+    snapshots = [
+    make_repository_snapshot(repository, captured_at)
+    for repository in repositories
+]
+    save_snapshots_as_json(snapshots, "data/repostory_snapshots" )
+    save_snapshots_as_json(snapshots, "data/repostory_snapshots" )
 
 if __name__ == "__main__":
     main()
