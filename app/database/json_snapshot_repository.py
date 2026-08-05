@@ -34,7 +34,7 @@ def save_snapshots_as_json(snapshots : list[RepositorySnapshot], filepath : str)
         snapshot["captured_at"],
     )
     for snapshot in stored_snapshots
-    }
+    }                                             #On récupère les ID / date de creation de chaque snapshot du JSon et on les stock
 
     for snapshot in new_snapshot:
         new_key = (
@@ -43,7 +43,9 @@ def save_snapshots_as_json(snapshots : list[RepositorySnapshot], filepath : str)
         )
         if new_key not in old_keys: 
             stored_snapshots.append(snapshot)
-            old_keys.add(new_key)
+            old_keys.add(new_key)               #Puis on récupère les ID / date de creation des données rentrantes, on vérifie si elle existent
+                                                #déja ou pas dans les données déja présentes. 
+                                                # si elle n'existe pas, on peut ajouter le snapshot au données rentrantes. (pas de doublon).
 
 
     content = json.dumps(

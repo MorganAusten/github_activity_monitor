@@ -9,7 +9,7 @@ def generate_markdown_report(report: RepositoryReport) -> str:
    markdown_report += f"Total Repositories: {report.total_repositories}\n\n"
    for language, count in sorted(report.repositories_by_language.items()):
        markdown_report += f"- {language}: {count}\n"
-   markdown_report += f"\n\n Average Stars: {report.average_stars:0f}\n\n"
+   markdown_report += f"\n\n Average Stars: {report.average_stars:.2f}\n\n"
    markdown_report += f"Most Starred Repository: \n\n"
    if report.most_starred_repository is not None:
       repository = report.most_starred_repository

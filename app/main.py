@@ -3,7 +3,7 @@ import app.reports.repository_reporter as repos_reporter
 
 from datetime import datetime
 from app.models.repository_snapshot import make_repository_snapshot
-from app.database.json_snapshot_repository import save_snapshots_as_json
+from app.database.postgresql_snapshot_repository import save_snapshots
 from app.github_client import GitHubClient
 from app.mappers.repository_mapper import map_repository_from_github
 from app.repository_filter import repository_filter
@@ -40,31 +40,11 @@ def main() -> None:
     for repository in repositories:
         print(f"{repository.owner} | {repository.name} | {repository.language} | {repository.stars} stars")
 
-
-
-    # pprint(raw_repositories[0])
-    # return
-
-
     filtered_repositories_a = repository_filter(repositories, language="HTML", stars=100)
     print(f"\n{len(filtered_repositories_a)} repos found. \n")
     print("Filtered repositories_a (params: language = HTML , stars = 100):")
     for repository in filtered_repositories_a:
         print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
-
-    # filtered_repositories_b = repository_filter(repositories, language= None, stars=1000)
-    # filtered_repositories_c = repository_filter(repositories, language= "Ruby", stars=500)
-    # print(f"\n{len(filtered_repositories_b)} repos found. \n")
-    # print("Filtered repositories_b (params: language = None, stars = 1000):")
-    # for repository in filtered_repositories_b:
-    #     print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
-
-    # print(f"\n{len(filtered_repositories_c)} repos found. \n")
-    # print("Filtered repositories_c (params: language = Ruby, stars = 500):")
-    # for repository in filtered_repositories_c:
-    #     print(f"{repository.owner}/{repository.name} | {repository.language} | {repository.stars} stars")
-
-    # test_repository_filter()
 
     markdown = generate_markdown_report(repos_reporter.build_repository_report(repositories))
     print(generate_markdown_report(repos_reporter.build_repository_report(repositories)))
@@ -77,9 +57,15 @@ def main() -> None:
     snapshots = [
     make_repository_snapshot(repository, captured_at)
     for repository in repositories
-]
-    save_snapshots_as_json(snapshots, "data/repostory_snapshots" )
-    save_snapshots_as_json(snapshots, "data/repostory_snapshots" )
+    ]   
+
+    print(f"{len(snapshots)} received.")
+
+    inserted_snapshot, ignored_snapshot = save_snapshots(snapshots)
+    print(f"""{inserted_snapshot} snapshots stored in PostgreSQL.
+    {ignored_snapshot} snapshots ignored in PostgreSQL.""")
+
+    
 
 if __name__ == "__main__":
     main()
