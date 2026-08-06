@@ -17,15 +17,17 @@ def save_snapshots(repository_snapshots : list[RepositorySnapshot] ) -> tuple[in
                     repository_id,
                     owner,
                     name,
+                    language,
                     stars,
                     captured_at
                 )
-                VALUES (%s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s)
                 ON CONFLICT (repository_id,captured_at) DO NOTHING;
                 """,(
                     repository_snapshot.repository_id,
                     repository_snapshot.owner,
                     repository_snapshot.name,
+                    repository_snapshot.language,
                     repository_snapshot.stars,
                     repository_snapshot.captured_at
                 ))

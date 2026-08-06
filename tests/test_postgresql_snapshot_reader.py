@@ -13,8 +13,11 @@ def test_postgresql_snapshot_reader():
     print(f"test repository id : {test_repository_id}")
 
     snapshots : list[RepositorySnapshot] = [
-        RepositorySnapshot(test_repository_id,"owner","name",475,older_date.isoformat()),
-        RepositorySnapshot(test_repository_id,"owner","name",476,newer_date.isoformat())
+        RepositorySnapshot(repository_id = test_repository_id,owner = "owner",name = "name",
+        language = "C++",stars = 475,captured_at =older_date.isoformat()),
+        
+        RepositorySnapshot(repository_id = test_repository_id,owner = "owner",name = "name",
+        language = "Python",stars = 476,captured_at =newer_date.isoformat())
     ]
     try:
         save_snapshots(snapshots)
@@ -25,6 +28,8 @@ def test_postgresql_snapshot_reader():
             assert result.repository_id == test_repository_id
         assert results[0].captured_at == newer_date.isoformat()
         assert results[1].captured_at == older_date.isoformat()
+        assert results[0].language == "Python"
+        assert results[1].language == "C++"
     finally:
         deleted_count = delete_postgresql_snapshots_by_repository(test_repository_id)
 

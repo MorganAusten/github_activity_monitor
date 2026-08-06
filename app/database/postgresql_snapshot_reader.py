@@ -9,7 +9,7 @@ def read_snapshots() -> list[RepositorySnapshot] :
         print("connection PostgreSQL for read succeed")
 
         with  connection.cursor() as cursor:
-            cursor.execute(""" SELECT repository_id, owner, name, stars, captured_at
+            cursor.execute(""" SELECT repository_id, owner, name, language, stars, captured_at
               FROM snapshot_repository
               ORDER BY captured_at DESC, name ASC;
               """)
@@ -19,7 +19,7 @@ def read_snapshots() -> list[RepositorySnapshot] :
 
     for snapshot in rows:
         new_snapshot = RepositorySnapshot(snapshot[0],snapshot[1],
-        snapshot[2],snapshot[3],snapshot[4].isoformat())
+        snapshot[2],snapshot[3],snapshot[4],snapshot[5].isoformat())
         result.append(new_snapshot)
 
     return result 
@@ -28,7 +28,7 @@ def read_snapshots_by_repository_id(repository_id : int) -> list[RepositorySnaps
     with get_postgresql_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute("""
-            SELECT repository_id, owner, name, stars, captured_at 
+            SELECT repository_id, owner, name, language, stars, captured_at 
             FROM snapshot_repository 
             WHERE repository_id = %s
             ORDER BY captured_at DESC;
@@ -37,7 +37,7 @@ def read_snapshots_by_repository_id(repository_id : int) -> list[RepositorySnaps
 
     result : list[RepositorySnapshot] = []
     for row in rows:
-        result.append(RepositorySnapshot(row[0],row[1],row[2],row[3],row[4].isoformat()))
+        result.append(RepositorySnapshot(row[0],row[1],row[2],row[3],row[4],row[5].isoformat()))
 
     return result
 

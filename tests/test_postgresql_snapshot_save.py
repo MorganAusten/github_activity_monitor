@@ -13,10 +13,17 @@ def test_postgresql_snapshot_save() -> None:
         base_repository +2
     ]
 
-    test_snapshots = [RepositorySnapshot(repositories_ids[0],"test","test_repos",5441,date.isoformat()),
-                      RepositorySnapshot(repositories_ids[0],"test","test_repos",5441,date.isoformat()),
-                      RepositorySnapshot(repositories_ids[1] ,"test","test_repos_a",5441,date.isoformat()),
-                      RepositorySnapshot(repositories_ids[2],"test","test_repos_b",5441,date.isoformat())
+    test_snapshots = [RepositorySnapshot(repository_id= repositories_ids[0],owner = "test",name= "test_repos",
+                    language = "C++", stars = 5441,captured_at = date.isoformat()),
+
+                      RepositorySnapshot(repository_id= repositories_ids[0],owner = "test",name= "test_repos",
+                      language = "C++", stars = 5441,captured_at = date.isoformat()),
+
+                      RepositorySnapshot(repository_id= repositories_ids[1], owner = "test",name= "test_repos_a",
+                      language = "C++", stars = 5441,captured_at = date.isoformat()),
+
+                      RepositorySnapshot(repository_id= repositories_ids[2],owner = "test",name= "test_repos_b",
+                      language = "C++", stars = 5441,captured_at = date.isoformat())
                       ]
     try:
         inserted_count,ignored_count = save_snapshots(test_snapshots)
