@@ -20,7 +20,7 @@ def save_snapshots(repository_snapshots : list[RepositorySnapshot] ) -> tuple[in
                     user =postgre_user,
                     password = postgre_password) as connection:
 
-        print("Connection PostgreSQL succeed")
+        print("connection PostgreSQL for save succeed")
 
         with  connection.cursor() as cursor:
             for repository_snapshot in repository_snapshots:
