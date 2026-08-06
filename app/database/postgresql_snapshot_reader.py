@@ -1,23 +1,10 @@
-import os
 import psycopg
-from dotenv import load_dotenv
 from app.models.repository_snapshot import RepositorySnapshot
-
-load_dotenv()
-
-postgre_host = os.getenv("POSTGRES_HOST")
-postgre_port = os.getenv("POSTGRES_PORT")
-postgre_db = os.getenv("POSTGRES_DB")
-postgre_user = os.getenv("POSTGRES_USER")
-postgre_password = os.getenv("POSTGRES_PASSWORD")
+from app.database.postgresql_client import get_postgresql_connection
 
 def read_snapshots() -> list[RepositorySnapshot] :
 
-    with psycopg.connect(host = postgre_host,
-                    port= postgre_port,
-                    dbname = postgre_db,
-                    user =postgre_user,
-                    password = postgre_password) as connection:
+    with get_postgresql_connection() as connection:
 
         print("connection PostgreSQL for read succeed")
 
@@ -38,11 +25,7 @@ def read_snapshots() -> list[RepositorySnapshot] :
     return result 
 
 def read_snapshots_by_repository_id(repository_id : int) -> list[RepositorySnapshot]:
-    with psycopg.connect(host = postgre_host,
-                    port= postgre_port,
-                    dbname = postgre_db,
-                    user =postgre_user,
-                    password = postgre_password) as connection:
+    with get_postgresql_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute("""
             SELECT repository_id, owner, name, stars, captured_at 
@@ -57,6 +40,8 @@ def read_snapshots_by_repository_id(repository_id : int) -> list[RepositorySnaps
         result.append(RepositorySnapshot(row[0],row[1],row[2],row[3],row[4].isoformat()))
 
     return result
+
+
 
 if __name__ == "__main__":
     snapshots = read_snapshots_by_repository_id(20978623)

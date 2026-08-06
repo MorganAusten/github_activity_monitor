@@ -1,24 +1,12 @@
-import os
-import psycopg
 from app.models.repository_snapshot import RepositorySnapshot
-from dotenv import load_dotenv
-
-load_dotenv()
-
-postgre_host = os.getenv("POSTGRES_HOST")
-postgre_port = os.getenv("POSTGRES_PORT")
-postgre_db = os.getenv("POSTGRES_DB")
-postgre_user = os.getenv("POSTGRES_USER")
-postgre_password = os.getenv("POSTGRES_PASSWORD")
+from app.database.postgresql_client import get_postgresql_connection
 
 def save_snapshots(repository_snapshots : list[RepositorySnapshot] ) -> tuple[int,int] :
+
     inserted_count = 0
     ignored_count = 0
-    with psycopg.connect(host = postgre_host,
-                    port= postgre_port,
-                    dbname = postgre_db,
-                    user =postgre_user,
-                    password = postgre_password) as connection:
+
+    with get_postgresql_connection() as connection:
 
         print("connection PostgreSQL for save succeed")
 
@@ -48,3 +36,16 @@ def save_snapshots(repository_snapshots : list[RepositorySnapshot] ) -> tuple[in
                     ignored_count += 1
 
     return (inserted_count,ignored_count)
+
+def delete_postgresql_snapshots_by_repository(repository_id : int) -> int:
+
+    with get_postgresql_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            DELETE FROM snapshot_repository
+            WHERE repository_id = %s;
+            """,
+            (repository_id,))
+            delete_count = cursor.rowcount
+
+    return delete_count
